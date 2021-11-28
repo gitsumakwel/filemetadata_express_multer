@@ -27,20 +27,10 @@ app.use(cors());
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-/*
-app.use(fileUpload({    
-    useTempFiles : true,
-    tempFileDir : __dirname + '/tmp/',
-    safeFileNames : true,
-    preserveExtension: true,
-    uploadTimeout: 300000 //5 minutes
-    }));
-*/
+
 app.get('/', function (req, res) {
     res.sendFile(process.cwd() + '/views/index.html');
 });
-
-
 
 
 const port = process.env.PORT || 3000;
@@ -51,7 +41,7 @@ app.listen(port, function () {
 
 const postfileanalyse = (req,res,next) => {
   let message;
-  
+
   fileupload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       console.log('fileupload multererror', err)
@@ -61,22 +51,19 @@ const postfileanalyse = (req,res,next) => {
       console.log('fileupload Error', err)
       // An unknown error occurred when uploading.
       res.send('Fileupload Error', err);
-    }  
-  });  
+    }
+  });
   if (!req.file) {
-        console.log("No file received");          
+        console.log("No file received");
         res.sendFile(process.cwd() + '/views/index.html');
-    
+
     } else {
       const upfile = req.file;
       console.log('file received');
-      console.log(req.file);            
-      res.json({name: upfile.originalname, type: upfile.mimetype, size: upfile.size}); 
+      console.log(req.file);
+      res.json({name: upfile.originalname, type: upfile.mimetype, size: upfile.size});
 
     }
-  /*
-
-  */
 }
 
 //upfile name input field inside the form for upload
